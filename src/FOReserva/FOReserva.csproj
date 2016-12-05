@@ -82,6 +82,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
@@ -162,13 +163,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.OAuth.2.0.30506.0\lib\net40\Microsoft.Web.WebPages.OAuth.dll</HintPath>
     </Reference>
-    <Reference Include="WebMatrix.Data">
-      <HintPath>C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v2.0\Assemblies\WebMatrix.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.2.0.30506.0\lib\net40\WebMatrix.WebData.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Http.OData, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.4.0.30506\lib\net40\System.Web.Http.OData.dll</HintPath>
@@ -185,6 +179,13 @@
       <Private>True</Private>
       <HintPath>..\packages\System.Spatial.5.2.0\lib\net40\System.Spatial.dll</HintPath>
     </Reference>
+    <Reference Include="WebMatrix.Data">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v2.0\Assemblies\WebMatrix.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v2.0\Assemblies\WebMatrix.WebData.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AuthConfig.cs" />
@@ -196,19 +197,34 @@
     <Compile Include="Controllers\gestion_reserva_restauranteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\gestion_vuelosController.cs" />
+    <Compile Include="Controllers\registro_autenticacionController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\Restaurantes\Cvista_restaurante.cs" />
+    <Compile Include="Models\BaseEntity.cs" />
+    <Compile Include="Models\Restaurantes\CReservation_Restaurant.cs" />
+    <Compile Include="Models\Restaurantes\CRestaurantModel.cs" />
+    <Compile Include="Models\Sesion\Ccliente.cs" />
+    <Compile Include="Models\Sesion\Ccodigo_Temporal.cs" />
+    <Compile Include="Models\Sesion\Ccontrasena.cs" />
+    <Compile Include="Models\Sesion\Cpregunta_Respuesta.cs" />
+    <Compile Include="Models\Sesion\Csesion.cs" />
     <Compile Include="Models\Vuelos\Cvista_Vuelos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\ReservationModels.cs" />
+    <Compile Include="ReservaDB.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ReservaDB.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Servicio\manejadorSQL.cs" />
+    <Compile Include="Servicio\ManejadorSQLReserva.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\assets\css\color_scheme\green.css" />
+    <Content Include="Content\assets\css\custom.css" />
     <Content Include="Content\assets\css\essentials.css" />
     <Content Include="Content\assets\css\header-1.css" />
     <Content Include="Content\assets\css\layout-dark.css" />
@@ -1569,6 +1585,12 @@
     <Content Include="Content\assets\plugins\slider.swiper\dist\js\maps\swiper.jquery.min.js.map" />
     <Content Include="Content\assets\plugins\slider.swiper\dist\js\maps\swiper.min.js.map" />
     <Content Include="Content\assets\plugins\styleswitcher\color_schemes\color_scheme.fla" />
+    <Content Include="Images\restaurant_generic.jpg" />
+    <Content Include="ReservaDB.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>ReservaDB.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Models\Autos\placeholder.html" />
     <Content Include="Models\Cruceros\placeholder.html" />
@@ -2950,13 +2972,25 @@
     <Content Include="Views\gestion_vuelos\gestion_vuelos.cshtml" />
     <Content Include="Views\gestion_vuelos\gestion_vuelosImagenes.cshtml" />
     <Content Include="Views\gestion_reserva_restaurante\gestion_reserva_restaurante.cshtml" />
+    <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\gestion_reserva_restaurante\restaurant_resultados.cshtml" />
+    <Content Include="Views\gestion_reserva_restaurante\reservar_restaurant.cshtml" />
+    <Content Include="Views\gestion_reserva_restaurante\confirma_restaurant.cshtml" />
+    <Content Include="Views\registro_autenticacion\Sesion_registro_recuperacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\registro_autenticacion\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReservaDB.dbml.layout">
+      <DependentUpon>ReservaDB.dbml</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
